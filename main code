@@ -1,0 +1,198 @@
+#include<bits/stdc++.h>
+using namespace std;
+class book
+{
+    string title,author,publisher;
+    float price;
+    int stock;
+    public:
+    static int s_trans,us_trans;
+    book(string a,string b,string c,float p,int s)
+    {
+            title=a;
+            author=b;
+            publisher=c;
+            price=p;
+            stock=s;
+    }
+    void display()
+    {
+            cout<<"\nAuthor Name: "<<author;
+            cout<<"\nTitle Name: "<<title;
+            cout<<"\nPublisher Name: "<<publisher;
+            cout<<"\nPrice: "<<price;
+            cout<<"\nStock Position: "<<stock;
+    }
+    int search(string tbuy,string abuy)
+    {
+            if(title==tbuy&&author==abuy)
+            return 1;
+            else
+            return 0;
+    }
+    void buy_book()
+    {
+            int count;
+            cout<<"\nEnter Number Of Books to buy: ";
+            cin>>count;
+            if(count<=stock)
+            {
+                stock=stock-count;
+                cout<<"\nBooks Bought Sucessfully";
+                cout<<"\nAmount: Rs. "<<price*count;
+                s_trans++;
+            }
+            else
+            {
+               cout<<"\nRequired Copies not in Stock";
+               us_trans++;
+             }
+    }
+    void update()
+    {
+          int ch;
+         string a,b,c;
+          int p,s;
+          cout<<"\nEnter the detail you want to update: \n";
+          cout<<"1. Title\n2. Author name\n3. publisher\n4. price\n5. stock\n\nEnter your choice:  ";
+
+          cin>>ch;
+          switch(ch)
+          {
+                case 1:
+                        cout<<"enter the new title : ";
+                        cin>>a;
+                        title=a;
+
+                break;
+                case 2:
+                        cout<<"enter the new author name : ";
+                        cin>>b;
+                        author=b;
+                break;
+                case 3:
+                        cout<<"enter the new publisher : ";
+                        cin>>c;
+                        publisher=c;
+                break;
+                case 4: cout<<"enter the new price : ";
+                        cin>>p;
+                        price=p;
+                break;
+                case 5: cout<<"enter the new stock : ";
+                        cin>>s;
+                        stock=s;
+                break;
+          }
+     }
+};
+int book:: s_trans;
+int book:: us_trans;
+
+int main()
+{
+	int n,i=0,s,choice,t,ch;
+    float p;
+   string a,b,c;
+   string tb,ab;
+    book *q[30];
+    while(1)
+    {
+        cout<<"\n\n\t\tMENU";
+        cout<<"\n1. Entry of New Book";
+        cout<<"\n2. Buy a book";
+        cout<<"\n3. Search For Book";
+        cout<<"\n4. Update Details Of Book";
+        cout<<"\n5. Record of successfull/unsuccessfull transaction";
+        cout<<"\n6. Exit";
+        cout<<"\n\nEnter your Choice: ";
+        cin>>choice;
+        switch(choice)
+		{
+            case 1:
+                do
+                {
+                    cout<<"\nenter title of book: ";
+                    cin>>a;
+                    cout<<"\nenter author of book: ";
+                    cin>>b;
+                    cout<<"\nenter publisher of book: ";
+                    cin>>c;
+                    cout<<"\nenter price of one book: ";
+                    cin>>p;
+                    cout<<"\nenter number of books in stock: ";
+                    cin>>s;
+                    q[i]=new book(a,b,c,p,s);
+                    i++;
+                    cout<<"\nDo you want to enter new record for books press 1 for continue and 0 for exit : ";
+                    cin>>ch;
+                }
+                while(ch==1);
+                break;
+
+            case 2:
+                    cout<<"\nEnter the book you want to buy: ";
+                    cin>>tb;
+                    cout<<"\nEnter the name of author: ";
+                    cin>>ab;
+                    for(t=0;t<i;t++)
+                    {
+                        if(q[t]->search(tb,ab))
+			            {
+                            cout<<"\n---------------Book Found Successfully-------------\n";
+                            q[t]->buy_book();
+                            break;
+                        }
+                    }
+                    if(t==i)
+                    cout<<"\nThis Book is Not in Stock\n";
+                    break;
+
+		    case 3:
+                    cout<<"\nEnter the book title you want to search for: ";
+                    cin>>tb;
+                    cout<<"\nEnter the name of author: ";
+                    cin>>ab;
+                    for(t=0;t<i;t++)
+                    {
+                        if(q[t]->search(tb,ab))
+                        {
+                            cout<<"\n----------------Book Found Successfully-------------------\n";
+                            q[t]->display();
+                            break;
+                        }
+                    }
+                    if(t==i)
+                    cout<<"\nThis Book is Not in Stock";
+                    break;
+
+            case 4:
+                    cout<<"\nEnter the book title you want to search for: ";
+                    cin>>tb;
+                    cout<<"\nEnter the name of author: ";
+                    cin>>ab;
+                    for(t=0;t<i;t++)
+                    {
+                        if(q[t]->search(tb,ab))
+                        {
+                            cout<<"\nBook Found Successfully";
+                            q[t]->update();
+                            break;
+                        }
+                    }
+                    if(t==i)
+                    cout<<"\nThis Book is Not in Stock";
+                    break;
+
+            case 5:
+                    cout<<"\nNumber of successfull transaction: ";
+                    cout<<book::s_trans;
+                    cout<<"\nNumber of unsucessfull transaction: ";
+                    cout<<book::us_trans;
+                    break;
+
+            case 6:
+                    return 0;
+        }
+    }
+}
